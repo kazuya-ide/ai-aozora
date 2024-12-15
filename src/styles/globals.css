@@ -2,3 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* src/styles/globals.css */
+html {
+  transition: all 0.2s ease-in; /* スムーズな切り替え */
+}
+.dark {
+  background-color: #1a202c;
+  color: white;
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark p,
+.dark span,
+.dark li,
+.dark a {
+  color: white;
+}
