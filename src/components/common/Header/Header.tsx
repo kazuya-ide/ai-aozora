@@ -36,20 +36,20 @@ export default function Header() {
         </Link>
         <ul className={styles.navList}>
           <li>
-            <Link href="/about" className={styles.navItem}>
+            <Link href="/app/about" className={styles.navItem}>
               About
             </Link>
           </li>
-          <li>
-            <Link href="/projects" className={styles.navItem}>
-              Projects
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" className={styles.navItem}>
-              Contact
-            </Link>
-          </li>
+             <li>
+                <Link href="/projects" className={styles.navItem}>
+                    Projects
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className={styles.navItem}>
+                    Contact
+                </Link>
+              </li>
         </ul>
         <button className={styles.darkModeButton} onClick={toggleDarkMode}>
           {isDarkMode ? 'Light Mode' : 'Dark Mode'}

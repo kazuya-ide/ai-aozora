@@ -4,13 +4,13 @@
 import { useState, useEffect } from 'react';
 
 interface Post {
-    id: number;
-    title: {
-        rendered: string;
-    };
-    content: {
-        rendered: string;
-    };
+  id: number;
+  title: {
+    rendered: string;
+  };
+  content: {
+    rendered: string;
+  };
 }
 
 const WordPressPosts = () => {
@@ -21,27 +21,31 @@ const WordPressPosts = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-         const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
-         if (!apiUrl) {
+        const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
+        if (!apiUrl) {
           setError('WordPress API URLが設定されていません。');
-           setLoading(false);
-           return;
-         }
+          setLoading(false);
+          return;
+        }
 
         const response = await fetch(`${apiUrl}/wp/v2/posts`);
-         if (!response.ok) {
-           throw new Error(`APIリクエストに失敗しました: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`APIリクエストに失敗しました: ${response.status}`);
         }
         const data: Post[] = await response.json();
         setPosts(data);
-      } catch (err: any) {
+      } catch (err: unknown) {
+        if (err instanceof Error) {
           setError(err.message || 'データの取得に失敗しました。');
+        } else {
+         setError('データの取得に失敗しました。(不明なエラー)');
+        }
       } finally {
-         setLoading(false);
-       }
+        setLoading(false);
+      }
     };
 
-      fetchPosts();
+    fetchPosts();
   }, []);
 
   if (loading) {
@@ -52,7 +56,7 @@ const WordPressPosts = () => {
     return <p>Error: {error}</p>;
   }
 
-    return (
+  return (
     <div>
       <h1>WordPress Posts</h1>
       <ul>
@@ -66,6 +70,5 @@ const WordPressPosts = () => {
     </div>
   );
 };
-
 
 export default WordPressPosts;
