@@ -100,7 +100,7 @@ const WordPressPosts = () => {
         <div data-orientation="horizontal" role="none" className="shrink-0 bg-border h-[1px] w-full mb-8 mt-3"></div>
            <div className="flex flex-col justify-between gap-6 md:flex-row">
                  <h2 className="text-3xl font-medium md:w-1/2">What you can do with our blog posts?</h2>
-               <p className="md:w-1/2 text-gray-600">
+               <p className="md:w-1/2 text-gray-600 break-words">
                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
                  Molestiae praesent, ad ullam quis cupiditate atque maxime alias eaque repellendus perferendis, nemo repudiandae.
                 </p>
@@ -109,20 +109,20 @@ const WordPressPosts = () => {
           {displayedPosts.map((post) => (
              <div key={post.id} className="rounded-lg border bg-card text-card-foreground shadow-sm">
                 {post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0] && (
-                     <div className="w-full h-[300px] relative">
+                     <div className="w-full h-[300px] relative max-w-full">
                     <Image
                     src={post._embedded['wp:featuredmedia'][0].source_url}
                     alt={post.title.rendered}
                     fill
                    className="object-contain"
-                    sizes="(max-width: 768px) 100vw, 400px"
+                   sizes="100vw"
                     />
                 </div>
                  )}
               <div className="p-5">
                 <p className="mb-1 font-medium">{post.title.rendered}</p>
                 <div
-                  className="text-gray-600 max-h-[100px] overflow-hidden relative"
+                  className="text-gray-600 max-h-[100px] overflow-hidden relative break-words"
                    dangerouslySetInnerHTML={{ __html: post.content.rendered }}
                   />
                  <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white via-white to-transparent"></div>

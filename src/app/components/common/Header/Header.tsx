@@ -110,7 +110,7 @@ export default function Header() {
         </button>
        </div>
        <div className={`md:hidden absolute top-full left-0 w-full bg-gray-200 dark:bg-gray-800 z-10 ${isMenuOpen ? 'block':'hidden'}`}>
-           <div className="flex flex-col items-center gap-4 p-4">
+           <div className="flex flex-col items-center gap-4 p-4 max-w-full">
               <Link href="/about" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
                About
               </Link>
