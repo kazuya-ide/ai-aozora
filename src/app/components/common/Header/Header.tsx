@@ -1,4 +1,3 @@
-// src/components/Header.tsx
 'use client';
 
 import Link from 'next/link';
@@ -6,6 +5,8 @@ import { useState, useEffect } from 'react';
 
 export default function Header() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
   useEffect(() => {
     const storedTheme = localStorage.getItem('theme');
@@ -28,39 +29,38 @@ export default function Header() {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <header className="py-4 bg-gray-200 dark:bg-gray-800 flex justify-between items-center transition-colors duration-300">
-      <nav className="flex justify-between items-center w-full max-w-5xl mx-auto">
+      <div className="container mx-auto flex justify-between items-center px-4">
         <Link href="/" className="text-xl font-bold text-gray-900 dark:text-white transition-colors duration-300">
           My Portfolio
         </Link>
-        <ul className="list-none m-0 p-0 flex gap-4">
-          <li>
-            <Link href="/about" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
+     
+          <div className="hidden md:flex items-center gap-4">
+              <Link href="/about" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
               About
-            </Link>
-          </li>
-          <li>
-            <Link href="/projects" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
+              </Link>
+              <Link href="/projects" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
               Projects
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
+              </Link>
+              <Link href="/contact" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
               Blog
-            </Link>
-          </li>
-          <li>
-            <Link href="/blog" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
+              </Link>
+              <Link href="/blog" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
               Contact
-            </Link>
-          </li>
-        </ul>
-        <button
+              </Link>
+          </div>
+            
+    
+       <div className="flex items-center gap-4">
+         <button
           className="bg-transparent border-none text-gray-700 dark:text-gray-300 cursor-pointer transition-colors duration-300"
           onClick={toggleDarkMode}
-        >
+         >
           {isDarkMode ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +93,39 @@ export default function Header() {
             </svg>
           )}
         </button>
-      </nav>
+        <button
+           onClick={toggleMenu}
+          className="md:hidden bg-transparent border-none text-gray-700 dark:text-gray-300 cursor-pointer transition-colors duration-300"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+       </div>
+       <div className={`md:hidden absolute top-full left-0 w-full bg-gray-200 dark:bg-gray-800 z-10 ${isMenuOpen ? 'block':'hidden'}`}>
+           <div className="flex flex-col items-center gap-4 p-4">
+              <Link href="/about" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
+               About
+              </Link>
+              <Link href="/projects" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
+                Projects
+              </Link>
+              <Link href="/contact" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
+                Blog
+              </Link>
+              <Link href="/blog" className="py-2 px-4 text-gray-700 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-300">
+                Contact
+              </Link>
+           </div>
+        </div>
+      </div>
     </header>
   );
 }

@@ -6,10 +6,17 @@
 html {
   transition: all 0.2s ease-in; /* スムーズな切り替え */
 }
-.dark {
-  background-color: #1a202c;
-  color: white;
+
+:root {
+  --background: #ffffff; /* ライトモードの背景色 */
+  --foreground: #000000; /* ライトモードの文字色 */
 }
+
+.dark {
+  --background: #1a202c; /* ダークモードの背景色 */
+  --foreground: #ffffff; /* ダークモードの文字色 */
+}
+
 
 .dark h1,
 .dark h2,
@@ -18,6 +25,5 @@ html {
 .dark span,
 .dark li,
 .dark a {
-  color: white;
+  color: var(--foreground); /* ダークモードの文字色を適用 */
 }
-
