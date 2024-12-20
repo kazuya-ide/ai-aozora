@@ -17,8 +17,14 @@
    children: React.ReactNode
  }) {
    return (
-     <html lang="en">
+     <html lang="en" className="bg-white dark:bg-black">
+       <head>
+       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+       </head>
+       <body className={inter.className}>
       
+           {children}
+         </body>
      </html>
    )
  }
