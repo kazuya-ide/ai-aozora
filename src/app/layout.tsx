@@ -1,9 +1,10 @@
-import "../styles/globals.css";
+// src/app/layout.tsx
+import './styles/globals.css';
 import type { Metadata } from 'next';
-
+import Header from '@/app/components/common/Header/Header'; 
 export const metadata: Metadata = {
-    title: 'My Portfolio',
-    description: 'My personal portfolio',
+  title: 'My Portfolio',
+  description: 'My personal portfolio',
 };
 
 export default function RootLayout({
@@ -12,8 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
-      <body className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-50">
+    <html lang="ja" className="bg-white dark:bg-black text-gray-900 dark:text-gray-50">
+      <body >
+       
         {children}
       </body>
     </html>

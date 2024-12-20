@@ -1,4 +1,4 @@
-// src/components/WordPressPosts.tsx
+// src/components/WordPressPostBlog.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -20,7 +20,7 @@ interface Post {
   };
 }
 
-const WordPressPosts = () => {
+const WordPressPostBlog = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +36,7 @@ const WordPressPosts = () => {
         }
 
         const response = await fetch(
-          `${apiUrl}/wp/v2/posts?_embed`
+          `${apiUrl}/wp/v2/blog?_embed`
         );
         if (!response.ok) {
           throw new Error(`APIリクエストに失敗しました: ${response.status}`);
@@ -65,32 +65,32 @@ const WordPressPosts = () => {
     return <p>Error: {error}</p>;
   }
 
-    return (
-      <div className="mx-auto max-w-screen-lg px-4 md:px-0">
-          <h1 className="text-4xl font-bold mb-8">Works</h1>
-        <ul className="space-y-8">
-          {posts.map((post) => (
-            <li key={post.id} className="border p-4 rounded-lg shadow-md flex">
+  return (
+    <div className="mx-auto max-w-screen-lg px-4 md:px-0">
+      <h1 className="text-4xl font-bold mb-8">Blog</h1>
+      <ul className="space-y-8">
+        {posts.map((post) => (
+          <li key={post.id} className="border p-4 rounded-lg shadow-md flex">
             <div className="w-1/2 mr-4">
-               {post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0] && (
+              {post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0] && (
                 <div style={{ width: '400px', height: '600px', position: 'relative' }}>
-                 <Image
+                  <Image
                     src={post._embedded['wp:featuredmedia'][0].source_url}
-                     alt={post.title.rendered}
+                    alt={post.title.rendered}
                     fill
-                     style={{objectFit: 'cover'}}
-                     sizes="(max-width: 768px) 100vw, 400px"
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 100vw, 400px"
                   />
-               </div>
-             )}
-           </div>
-              <div className="w-1/2">
-                <h2 className="text-2xl font-bold mb-2">{post.title.rendered}</h2>
-                <div className="text-gray-700 max-h-[300px] overflow-hidden relative">
+                </div>
+              )}
+            </div>
+            <div className="w-1/2">
+              <h2 className="text-2xl font-bold mb-2">{post.title.rendered}</h2>
+              <div className="text-gray-700 max-h-[300px] overflow-hidden relative">
                 <div dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
-                 <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white via-white to-transparent"></div>
-               </div>
-                <button className="text-blue-500 mt-2">Read More</button>
+                <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white via-white to-transparent"></div>
+              </div>
+              <button className="text-blue-500 mt-2">Read More</button>
             </div>
           </li>
         ))}
@@ -99,4 +99,4 @@ const WordPressPosts = () => {
   );
 };
 
-export default WordPressPosts;
+export default WordPressPostBlog;
