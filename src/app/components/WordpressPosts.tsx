@@ -1,61 +1,55 @@
+// src/components/WordPressPosts.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import PostModal from '../components/PostModal';
+import useFetchWordPressPosts from '../useFetchWordPressPosts';
 
 interface Post {
-  id: number;
-  title: {
-    rendered: string;
-  };
-  content: {
-    rendered: string;
-  };
-  featured_media: number;
-  _embedded?: {
-    'wp:featuredmedia'?: {
-      source_url: string;
-    }[]
-  };
+    id: number;
+    title: {
+        rendered: string;
+    };
+    content: {
+        rendered: string;
+    };
+    featured_media: number;
+    _embedded?: {
+        'wp:featuredmedia'?: {
+            source_url: string;
+        }[]
+    };
 }
 
+
 const WordPressPosts = () => {
-    const [posts, setPosts] = useState<Post[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [displayedCount, setDisplayedCount] = useState(6);
+    const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const { posts, loading, error } = useFetchWordPressPosts();
+
 
     useEffect(() => {
-        const fetchPosts = async () => {
-            try {
-                const apiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL;
-                if (!apiUrl) {
-                    setError('WordPress API URLが設定されていません。');
-                    setLoading(false);
-                    return;
-                }
+      const handleResize = () => {
+        if (window.innerWidth < 1024) {
+          setDisplayedCount(4);
+        } else {
+          setDisplayedCount(6);
+        }
+      };
 
-                const response = await fetch(
-                   `${apiUrl}/wp/v2/posts?_embed&per_page=7` // ７記事取得
-                );
-                if (!response.ok) {
-                    throw new Error(`APIリクエストに失敗しました: ${response.status}`);
-                }
-                const data: Post[] = await response.json();
-                setPosts(data);
-            } catch (err: unknown) {
-                if (err instanceof Error) {
-                    setError(err.message || 'データの取得に失敗しました。');
-                } else {
-                    setError('データの取得に失敗しました。(不明なエラー)');
-                }
-            } finally {
-                setLoading(false);
-            }
-        };
+      handleResize(); // 初回ロード時に実行
+       window.addEventListener('resize', handleResize);
 
-        fetchPosts();
+      return () => {
+          window.removeEventListener('resize', handleResize);
+      }
     }, []);
+
+
 
     if (loading) {
         return <p>Loading...</p>;
@@ -65,8 +59,26 @@ const WordPressPosts = () => {
         return <p>Error: {error}</p>;
     }
 
-    const displayedPosts = posts.slice(0, 6); // 表示する記事数を制限
-    const hasMore = posts.length > 6; // 7記事以上あるか確認
+    const displayedPosts = posts.slice(0, displayedCount);
+    const hasMore = posts.length > displayedCount;
+
+    const truncateText = (text: string, maxLength: number) => {
+        if (!text) return '';
+        if (text.length <= maxLength) {
+            return text;
+        }
+        return text.slice(0, maxLength) + '...';
+    };
+
+      const handleReadMoreClick = (post: Post) => {
+        setSelectedPost(post);
+        setIsModalOpen(true);
+      }
+    
+    const handleCloseModal = () => {
+         setSelectedPost(null);
+        setIsModalOpen(false);
+     }
 
     return (
         <section className="py-16">
@@ -108,38 +120,54 @@ const WordPressPosts = () => {
                 </div>
                 <div className="mt-11 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {displayedPosts.map((post) => (
-                        <div key={post.id} className="rounded-lg border bg-white text-gray-900 shadow-sm">
+                        <div key={post.id} className="rounded-lg border  text-gray-900 dark:text-white shadow-sm bg-transparent w-full flex flex-col">
                             {post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0] && (
-                                <div className="w-full h-[200px] relative">
-                                    <Image
+                                <button
+                                   onClick={() => handleReadMoreClick(post)}
+                                     className="w-full  relative aspect-video"
+                                  >
+                                      <Image
                                         src={post._embedded['wp:featuredmedia'][0].source_url}
                                         alt={post.title.rendered}
                                         fill
                                         className="object-cover rounded-t-lg"
-                                        sizes="(max-width: 768px) 100vw, 33vw"
-                                    />
-                                </div>
+                                         sizes="(max-width: 768px) 100vw, 33vw"
+                                        style={{objectFit: 'cover'}}
+                                      />
+                                </button>
                             )}
-                            <div className="p-4">
-                                <h3 className="text-lg font-semibold mb-2">{post.title.rendered}</h3>
+                            <div className="p-4 flex flex-col">
+                                <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{truncateText(post.title.rendered, 50)}</h3>
                                 <div
-                                    className="text-sm text-gray-600 overflow-hidden line-clamp-3"
-                                    dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+                                     className="text-sm text-gray-600 overflow-hidden line-clamp-3 text-gray-600 dark:text-gray-400 flex-1"
+                                    dangerouslySetInnerHTML={{ __html: truncateText(post.content.rendered, 50) }}
                                 />
-                            </div>
-                            <div className="text-center py-2">
-                                <Link href="#" className="text-blue-500 hover:underline">Read More</Link>
+                              
+                                 <div className="text-center py-2">
+                                     <button
+                                          onClick={() => handleReadMoreClick(post)}
+                                          className="text-blue-500 hover:underline"
+                                     >Read More
+                                     </button>
+                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
                 {hasMore && (
                     <div className="mt-4 text-center">
-                        <Link href="/blog" className="text-blue-500 hover:underline">
+                        <Link href="/projects" className="text-blue-500 hover:underline">
                             More Posts
                         </Link>
                     </div>
                 )}
+                 {selectedPost &&  
+                    <PostModal
+                     post={selectedPost}
+                     onClose={handleCloseModal}
+                     isOpen={isModalOpen}
+                    />
+                  }
             </div>
         </section>
     );

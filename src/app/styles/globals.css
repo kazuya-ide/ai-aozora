@@ -4,20 +4,29 @@
 
 /* src/styles/globals.css */
 html {
-  transition: all 0.2s ease-in; /* スムーズな切り替え */
+    transition: all 0.2s ease-in;
+    background-color: white !important;
+    color: black !important;
 }
 
 :root {
-  --background: #ffffff; /* ライトモードの背景色 */
-  --foreground: #000000; /* ライトモードの文字色 */
+    --background: #ffffff;
+    --foreground: #000000;
 }
 
 .dark {
-  --background: #1a202c; /* ダークモードの背景色 */
-  --foreground: #ffffff; /* ダークモードの文字色 */
+    --background: #1a202c;
+    --foreground: #ffffff;
 }
 
-
+body {
+    background-color: white !important;
+    color: black !important;
+}
+.dark body {
+    background-color: var(--background) !important;
+    color: var(--foreground) !important;
+}
 .dark h1,
 .dark h2,
 .dark h3,
@@ -25,5 +34,5 @@ html {
 .dark span,
 .dark li,
 .dark a {
-  color: var(--foreground); /* ダークモードの文字色を適用 */
+    color: var(--foreground);
 }

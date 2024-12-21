@@ -3,11 +3,9 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="py-4 text-center bg-gray-800 text-white">
+    <footer className="py-4 text-center  text-black">
       <p>© {new Date().getFullYear()} My Portfolio</p>
-      <Link href="/about" className="text-blue-300 hover:text-blue-200">
-        About Page
-      </Link>
+     
     </footer>
   );
 }
