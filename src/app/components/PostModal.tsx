@@ -30,7 +30,7 @@ const PostModal: React.FC<PostModalProps> = ({post, onClose, isOpen}) => {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-4/5 max-h-screen overflow-y-auto relative">
                 <h2 className="text-3xl font-semibold mb-4 text-gray-900 dark:text-white">{post.title.rendered}</h2>
                 <div
-                    className="text-gray-700 dark:text-gray-300 overflow-hidden text-zinc-600"
+                    className="text-gray-700 dark:text-gray-300 overflow-hidden "
                     dangerouslySetInnerHTML={{ __html: post.content.rendered }}
                 />
                 <button

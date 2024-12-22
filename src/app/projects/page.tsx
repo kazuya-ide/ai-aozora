@@ -66,10 +66,11 @@ export default function ProjectsPage() {
                 <div className="h-[1px] bg-border w-full mb-8 mt-3"></div>
                 <div className="flex flex-col justify-between gap-6 lg:flex-row">
                     <h2 className="text-3xl font-medium lg:w-1/2">Projects</h2>
-                    <p className="lg:w-1/2 text-gray-600 break-words">
-                       作ったものを載せてます、画像かReadMoreをタップすると
-                       <p>詳細がモーダルで表示されます</p>
-                    </p>
+                    <div className='mx-20'>   
+                            <p className="lg:w-1/2 text-gray-600 break-words">
+                                作ったものを載せてます、画像かReadMoreをタップすると詳細がモーダルで表示されます
+                            </p>
+                    </div>
                 </div>
                  <div className="mt-11 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                  {posts.map((post) => (
@@ -92,7 +93,7 @@ export default function ProjectsPage() {
                              <div className="p-4 flex flex-col">
                                 <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-white">{truncateText(post.title.rendered, 50)}</h3>
                                 <div
-                                     className="text-sm text-gray-600 overflow-hidden line-clamp-3 text-gray-600 dark:text-gray-400 flex-1"
+                                     className="text-sm  overflow-hidden line-clamp-3 text-gray-600 dark:text-gray-400 flex-1"
                                     dangerouslySetInnerHTML={{ __html: truncateText(post.content.rendered, 50) }}
                                 />
                               

@@ -139,7 +139,7 @@ const WordPressPosts = () => {
                             <div className="p-4 flex flex-col">
                                 <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{truncateText(post.title.rendered, 50)}</h3>
                                 <div
-                                     className="text-sm text-gray-600 overflow-hidden line-clamp-3 text-gray-600 dark:text-gray-400 flex-1"
+                                     className="text-sm text-gray-600 overflow-hidden line-clamp-3  dark:text-gray-400 flex-1"
                                     dangerouslySetInnerHTML={{ __html: truncateText(post.content.rendered, 50) }}
                                 />
                               
