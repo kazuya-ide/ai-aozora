@@ -81,23 +81,7 @@ const WordPressPostBlog = () => {
     <section className="py-32">
       <div className="container max-w-7xl mx-auto">
         <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-1 text-zinc-600">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-              className="lucide lucide-square-dashed-mouse-pointer size-5">
-              <path d="M5 3a2 2 0 0 0-2 2"></path>
-              <path d="M19 3a2 2 0 0 1 2 2"></path>
-              <path d="m12 12 4 10 1.7-4.3L22 16Z"></path>
-              <path d="M5 21a2 2 0 0 1-2-2"></path>
-              <path d="M9 3h1"></path>
-              <path d="M9 21h2"></path>
-              <path d="M14 3h1"></path>
-              <path d="M3 9v1"></path>
-              <path d="M21 9v2"></path>
-              <path d="M3 14v1"></path>
-            </svg>
-            <p>Blog Posts</p>
-          </div>
+       
           <a href="#" className="hover:text-gray-800 hover:underline">Learn more<svg xmlns="http://www.w3.org/2000/svg"
               width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
               strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right ml-2 inline-block size-4">
