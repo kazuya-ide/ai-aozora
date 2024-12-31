@@ -52,7 +52,9 @@ export default function Header() {
     return (
         <header
             className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${
-                isHeaderTransparent ? 'bg-transparent' : `${isDarkMode ? 'dark:bg-gray-800' : 'bg-transparent'}`
+                isHeaderTransparent
+                    ? 'bg-transparent'
+                    : `${isDarkMode ? 'bg-gray-800 dark:bg-gray-800' : 'bg-white'}`
             }`}
         >
             <div className="container mx-auto flex justify-between items-center px-4">

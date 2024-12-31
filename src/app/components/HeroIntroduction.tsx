@@ -23,7 +23,7 @@ export default function HeroIntroduction() {
             <div className="text-center">
              <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                     HP制作に関するご相談やご依頼は、お気軽にご連絡ください。<br/>
-                     メール：happyyise0703@gmail.com
+                     メール：contact@ai-aozora.jp
               </p>
           </div>
           </div>

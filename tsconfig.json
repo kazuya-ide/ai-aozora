@@ -19,17 +19,22 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@components/*": ["src/components/*"]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+     "src/**/*.d.ts",
     ".next/types/**/*.ts",
-    "next.config.js"
-, "tailwind.config.js", "src/app/about/About.js"  ],
+    "next.config.js",
+    "tailwind.config.js",
+    "src/app/about/About.js",
+       "src/components/**/*.tsx"
+  ],
   "exclude": ["node_modules"]
 }

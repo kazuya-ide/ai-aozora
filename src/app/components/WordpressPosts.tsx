@@ -2,10 +2,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import PostModal from '../components/PostModal';
 import useFetchWordPressPosts from '../useFetchWordPressPosts';
+import PostCard from './PostCard'; // PostCardコンポーネントをインポート
+
 
 interface Post {
     id: number;
@@ -20,9 +20,8 @@ interface Post {
         'wp:featuredmedia'?: {
             source_url: string;
         }[]
-    };
+    } | undefined;
 }
-
 
 const WordPressPosts = () => {
     const [displayedCount, setDisplayedCount] = useState(6);
@@ -31,25 +30,28 @@ const WordPressPosts = () => {
 
     const { posts, loading, error } = useFetchWordPressPosts();
 
-
     useEffect(() => {
-      const handleResize = () => {
-        if (window.innerWidth < 1024) {
-          setDisplayedCount(4);
-        } else {
-          setDisplayedCount(6);
-        }
-      };
+        const handleResize = () => {
+            if (window.innerWidth < 1024) {
+                setDisplayedCount(4);
+            } else {
+                setDisplayedCount(6);
+            }
+        };
 
-      handleResize(); // 初回ロード時に実行
-       window.addEventListener('resize', handleResize);
+        handleResize(); // 初回ロード時に実行
+        window.addEventListener('resize', handleResize);
 
-      return () => {
-          window.removeEventListener('resize', handleResize);
-      }
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
-
+    useEffect(() => {
+      return () => {
+           document.body.style.overflow = '';
+      }
+    }, []);
 
     if (loading) {
         return <p>Loading...</p>;
@@ -62,79 +64,42 @@ const WordPressPosts = () => {
     const displayedPosts = posts.slice(0, displayedCount);
     const hasMore = posts.length > displayedCount;
 
-    const truncateText = (text: string, maxLength: number) => {
-        if (!text) return '';
-        if (text.length <= maxLength) {
-            return text;
-        }
-        return text.slice(0, maxLength) + '...';
-    };
-
-      const handleReadMoreClick = (post: Post) => {
+    const handleReadMoreClick = (post: Post) => {
         setSelectedPost(post);
         setIsModalOpen(true);
-      }
-    
+        document.body.style.overflow = 'hidden';
+    };
+
     const handleCloseModal = () => {
-         setSelectedPost(null);
+        setSelectedPost(null);
         setIsModalOpen(false);
-     }
+        document.body.style.overflow = '';
+    };
+
 
     return (
         <section className="py-16">
             <div className="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col sm:flex-row items-center justify-between text-sm gap-4">
-             
-                  
-                       「補足」 <br/>
-                       このサイトはreact×Nextjs×vercelで作成しています<br/>
-                               またワードプレスから投稿を更新しています
-                    
-                
+                    「補足」 <br />
+                    このサイトはreact×Nextjs×vercelで作成しています<br />
+                    またワードプレスから投稿を更新しています
                 </div>
                 <div className="h-[1px] bg-border w-full mb-8 mt-3"></div>
                 <div className="flex flex-col justify-between gap-6 lg:flex-row">
                     <h2 className="text-3xl font-medium lg:w-1/2">Project</h2>
-                   
                     <p className="lg:w-1/2 text-gray-600 break-words">
-                                作ったものを載せてます、画像かReadMoreをタップすると詳細がモーダルで表示されます
-                            </p>
-                    
+                        作ったものを載せてます、画像かReadMoreをタップすると詳細がモーダルで表示されます
+                    </p>
                 </div>
                 <div className="mt-11 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {displayedPosts.map((post) => (
-                        <div key={post.id} className="rounded-lg border  text-gray-900 dark:text-white shadow-sm bg-transparent w-full flex flex-col">
-                            {post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0] && (
-                                <button
-                                   onClick={() => handleReadMoreClick(post)}
-                                     className="w-full  relative aspect-video"
-                                  >
-                                      <Image
-                                        src={post._embedded['wp:featuredmedia'][0].source_url}
-                                        alt={post.title.rendered}
-                                        fill
-                                        className="object-cover rounded-t-lg"
-                                         sizes="(max-width: 768px) 100vw, 33vw"
-                                        style={{objectFit: 'cover'}}
-                                      />
-                                </button>
-                            )}
-                            <div className="p-4 flex flex-col">
-                                <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">{truncateText(post.title.rendered, 50)}</h3>
-                                <div
-                                     className="text-sm text-gray-600 overflow-hidden line-clamp-3  dark:text-gray-400 flex-1"
-                                    dangerouslySetInnerHTML={{ __html: truncateText(post.content.rendered, 50) }}
-                                />
-                              
-                                 <div className="text-center py-2">
-                                     <button
-                                          onClick={() => handleReadMoreClick(post)}
-                                          className="text-blue-500 hover:underline"
-                                     >Read More
-                                     </button>
-                                 </div>
-                            </div>
-                        </div>
+                    {displayedPosts.map((post, index) => (
+                        <PostCard
+                            key={post.id}
+                            post={post}
+                            delay={200 * (index + 1)}
+                            onReadMoreClick={handleReadMoreClick}
+                        />
                     ))}
                 </div>
                 {hasMore && (
@@ -144,13 +109,35 @@ const WordPressPosts = () => {
                         </Link>
                     </div>
                 )}
-                 {selectedPost &&  
-                    <PostModal
-                     post={selectedPost}
-                     onClose={handleCloseModal}
-                     isOpen={isModalOpen}
-                    />
-                  }
+                {isModalOpen && selectedPost && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70" onClick={handleCloseModal}>
+                        <div className="bg-white rounded-lg p-6 w-full max-w-2xl relative" onClick={(e) => e.stopPropagation()}>
+                            <button
+                                onClick={handleCloseModal}
+                                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                            >
+                                <svg
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                            <div
+                                className="text-gray-700 overflow-y-auto max-h-[80vh]"
+                                dangerouslySetInnerHTML={{ __html: selectedPost.content.rendered }}
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
         </section>
     );
