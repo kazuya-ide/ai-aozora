@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* src/styles/globals.css */
+html {
+    transition: all 0.2s ease-in;
+    background-color: white !important;
+    color: black !important;
+}
+
+:root {
+    --background: #ffffff;
+    --foreground: #000000;
+}
+
+.dark {
+    --background: #1a202c;
+    --foreground: #ffffff;
+}
+
+body {
+    background-color: white !important;
+    color: black !important;
+}
+.dark body {
+    background-color: var(--background) !important;
+    color: var(--foreground) !important;
+}
+.dark h1,
+.dark h2,
+.dark h3,
+.dark p,
+.dark span,
+.dark li,
+.dark a {
+    color: var(--foreground);
+}
